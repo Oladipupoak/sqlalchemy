@@ -3,11 +3,17 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, Table, MetaData   # <--- here
 from sqlalchemy.orm import sessionmaker
 from database import Students,engine,Base,Session,Course,Instructor,StudentCourse
+from flask import g, jsonify, request, Response, session, redirect, url_for, render_template
+from sqlalchemy.orm import query
+import sqlite3
 DEFAULT_FILE = "sqlite:///database.db"
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = DEFAULT_FILE
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
+
+
+
 
 @app.route('/')
 def index():
@@ -81,6 +87,10 @@ def instructors():
     instructors = Instructor.query.all()
     return render_template('instructors.html', instructors=instructors)
 
+@app.route('/instructor_course')
+def instructor_course():
+    instructor_course = Instructor.query.all()
+    return render_template('instructor_course.html', instructor_course=instructor_course)
 
 
 
